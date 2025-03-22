@@ -11,7 +11,7 @@ export const SignIn = () => {
         onClick={() => signIn()}
         type="button"
       >
-        Signin with Google
+        Login
       </button>
     </form>
   );
