@@ -1,6 +1,7 @@
 "use client";
 
 import { login } from "@/app/actions/auth/login";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 interface FormInputs {
@@ -9,15 +10,19 @@ interface FormInputs {
 }
 export const FormLogin = () => {
   const { register, handleSubmit } = useForm<FormInputs>();
+  const router = useRouter();
 
-  const onSubmit =async (data: FormInputs) => {
+  const onSubmit = async (data: FormInputs) => {
     const formData = new FormData();
     formData.append("email", data.email);
     formData.append("password", data.password);
 
-    const resp= await login(formData);
+    const resp = await login("credentials", formData);
     console.log(resp);
 
+    if (resp.ok) {
+      router.replace("/");
+    }
   };
 
   return (

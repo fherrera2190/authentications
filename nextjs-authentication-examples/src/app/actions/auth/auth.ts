@@ -1,21 +1,16 @@
 "use server";
 
 import { signIn } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
 
-export const login = async (provider: string, formData?: FormData) => {
-  let options = {
-    redirect: false,
-  };
-
-  if (formData) {
-    options = {
-      ...options,
-    };
-  }
-
+export const auth = async (formData: FormData) => {
   try {
-    await signIn(provider, options);
+    await signIn("credentials", {
+      ...Object.fromEntries(formData),
+      redirect: false,
+    });
 
+    revalidatePath("/");
     return {
       ok: true,
       message: "Login successful",
